@@ -1,0 +1,27 @@
+{
+  "name": "dictionaryapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/drawer": "^7.3.2",
+    "@react-navigation/native": "^7.1.6",
+    "axios": "^1.9.0",
+    "expo": "~56.0.9",
+    "expo-av": "^15.0.2",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-gesture-handler": "^2.26.0",
+    "react-native-reanimated": "^3.17.5",
+    "react-native-safe-area-context": "^5.4.0",
+    "react-native-screens": "^4.10.0"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "private": true
+}
