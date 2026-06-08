@@ -1,26 +1,30 @@
 /**
  * App-wide color palette.
+ * Updated to match LexiTech Solutions brand guidelines.
  */
 export const COLORS = {
-  primary: '#4A6FA5',       // Blue — buttons, accents
-  primaryDark: '#2C4A7C',   // Darker blue — header bg
-  secondary: '#F0F4FF',     // Light blue-tint bg
-  accent: '#FF6B35',        // Orange — highlights
+  primary: '#2563EB',
+  primaryDark: '#1D4ED8',
+  primaryLight: '#EFF6FF',
+  secondary: '#F8FAFC',
+  accent: '#FF6B35',
+  accentLight: '#FFF7ED',
   white: '#FFFFFF',
-  black: '#1A1A2E',
-  textPrimary: '#1A1A2E',
-  textSecondary: '#555770',
-  textMuted: '#8E8FA8',
-  border: '#DDE2F0',
+  black: '#1E293B',
+  textPrimary: '#1E293B',
+  textSecondary: '#475569',
+  textMuted: '#94A3B8',
+  border: '#E2E8F0',
   errorRed: '#D32F2F',
   errorBg: '#FFEBEE',
   successGreen: '#388E3C',
   cardBg: '#FFFFFF',
-  drawerBg: '#1E2A4A',
-  drawerText: '#E0E8FF',
-  drawerActive: '#4A6FA5',
-  phonetic: '#4A6FA5',
+  drawerBg: '#1E293B',
+  drawerText: '#F1F5F9',
+  drawerActive: '#2563EB',
+  phonetic: '#2563EB',
   posTag: '#FF6B35',
-  inputBg: '#F5F7FF',
-  shadow: '#B0B8D8',
+  inputBg: '#F8FAFC',
+  shadow: '#94A3B8',
+  shadowDark: '#0F172A',
 };
