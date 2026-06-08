@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
@@ -10,14 +10,28 @@ const WordDetailCard = ({ data, word }) => {
   const primaryEntry = data[0];
   const mainWord = primaryEntry.word || word;
   const allPhonetics = data.flatMap((entry) => entry.phonetics || []);
-  const phoneticText =
+  const allMeanings = data.flatMap((entry) => entry.meanings || []);
+
+  const defaultPhonetic =
     allPhonetics.find((p) => p.text)?.text ||
     primaryEntry.phonetic ||
     null;
+
+  const [selectedPhonetic, setSelectedPhonetic] = useState({
+    text: defaultPhonetic,
+    audio: allPhonetics.find((p) => p.text === defaultPhonetic)?.audio || null
+  });
+
   const audioUrls = allPhonetics
-    .map((p) => p.audio)
-    .filter((url) => url && url.trim() !== '');
-  const allMeanings = data.flatMap((entry) => entry.meanings || []);
+    .map((p) => ({ audio: p.audio, text: p.text }))
+    .filter((item) => item.audio && item.audio.trim() !== '');
+
+  const handleAccentSelect = (audioUrl, phoneticText) => {
+    setSelectedPhonetic({ 
+      text: phoneticText || allPhonetics.find((p) => p.audio === audioUrl)?.text || null, 
+      audio: audioUrl 
+    });
+  };
 
   return (
     <ScrollView
@@ -27,12 +41,16 @@ const WordDetailCard = ({ data, word }) => {
       {/* ── Word Heading ── */}
       <View style={styles.wordHeader}>
         <Text style={styles.wordText}>{mainWord}</Text>
-        {phoneticText ? (
-          <Text style={styles.phoneticText}>{phoneticText}</Text>
+        {selectedPhonetic.text ? (
+          <Text style={styles.phoneticText}>{selectedPhonetic.text}</Text>
         ) : null}
         {audioUrls.length > 0 && (
           <View style={styles.audioWrapper}>
-            <AudioPlayer audioUrls={audioUrls} />
+            <AudioPlayer 
+              audioUrls={audioUrls.map((u) => u.audio)} 
+              phonetics={allPhonetics}
+              onAccentSelect={handleAccentSelect} 
+            />
           </View>
         )}
       </View>
@@ -153,7 +171,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.borderLight,
   },
 
-  // Word header
   wordHeader: {
     marginBottom: 16,
   },
@@ -184,7 +201,6 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
 
-  // Meaning block
   meaningBlock: {
     marginBottom: 8,
   },
@@ -232,7 +248,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // Definition
   defItem: {
     flexDirection: 'row',
     marginBottom: 14,
@@ -281,7 +296,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
 
-  // Synonyms / Antonyms
   synonymSection: {
     marginTop: 14,
   },

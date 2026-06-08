@@ -6,7 +6,6 @@ import {
   FlatList,
   StyleSheet,
   SafeAreaView,
-  StatusBar,
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,15 +26,13 @@ const DrawerContent = (props) => {
   const handleClearHistory = () => {
     Alert.alert(
       'Clear Search History',
-      'Are you sure you want to clear all search history? This action cannot be undone.',
+      'Are you sure you want to clear all search history?',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Clear All',
           style: 'destructive',
-          onPress: () => {
-            clearSearchHistory();
-          },
+          onPress: clearSearchHistory,
         },
       ]
     );
@@ -59,14 +56,13 @@ const DrawerContent = (props) => {
           <View style={styles.headerDecoration} />
         </View>
 
-        {/* ── Navigation ── */}
+        {/* ── Nav ── */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>MENU</Text>
           <TouchableOpacity
             style={styles.navItem}
             onPress={() => props.navigation.navigate('Search')}
             accessibilityRole="button"
-            accessibilityLabel="Go to Search screen"
           >
             <View style={styles.navIconWrapper}>
               <Ionicons name="search" size={18} color={COLORS.primaryDark} />
@@ -94,8 +90,6 @@ const DrawerContent = (props) => {
               {searchHistory.length > 0 && (
                 <TouchableOpacity
                   onPress={handleClearHistory}
-                  accessibilityLabel="Clear search history"
-                  accessibilityRole="button"
                   style={styles.clearButton}
                 >
                   <Text style={styles.clearButtonText}>Clear All</Text>
@@ -123,9 +117,7 @@ const DrawerContent = (props) => {
                 <TouchableOpacity
                   style={styles.historyItem}
                   onPress={() => handleHistoryPress(item)}
-                  accessibilityRole="button"
                   accessibilityLabel={`Search again for ${item}`}
-                  activeOpacity={0.7}
                 >
                   <View style={styles.historyItemIconWrapper}>
                     <Ionicons name="chevron-forward" size={16} color={COLORS.accent} />
@@ -138,7 +130,7 @@ const DrawerContent = (props) => {
         </View>
       </DrawerContentScrollView>
 
-      {/* ── Footer ── */}
+      {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.footerDivider} />
         <Text style={styles.footerText}>Powered by Free Dictionary API</Text>
@@ -157,7 +149,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 
-  // Header with gradient effect
   headerGradient: {
     backgroundColor: '#0F172A',
     paddingTop: 24,
@@ -207,7 +198,6 @@ const styles = StyleSheet.create({
     opacity: 0.08,
   },
 
-  // Section
   section: {
     paddingHorizontal: 16,
     paddingTop: 20,
@@ -227,7 +217,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
 
-  // Nav items
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -253,7 +242,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.drawerText,
     fontWeight: '600',
-    letterSpacing: 0.3,
   },
   navActiveDot: {
     width: 8,
@@ -262,7 +250,72 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.accent,
   },
 
-  // History header
+  profileCard: {
+    backgroundColor: '#1E293B',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#334155',
+    marginBottom: 4,
+  },
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  profileAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: COLORS.accent,
+  },
+  profileAvatarText: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: COLORS.accent,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: COLORS.drawerText,
+    marginBottom: 3,
+  },
+  profileFrequencyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileFrequency: {
+    fontSize: 12,
+    color: COLORS.accent,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+  editProfileButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    alignSelf: 'flex-start',
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.25)',
+  },
+  editProfileText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: COLORS.accent,
+    marginLeft: 4,
+  },
+
   historyHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -307,7 +360,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // History item
   historyItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -338,7 +390,6 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
 
-  // Empty state
   emptyHistory: {
     paddingHorizontal: 20,
     paddingVertical: 28,
@@ -367,7 +418,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  // Footer
   footer: {
     padding: 16,
     alignItems: 'center',

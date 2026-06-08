@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import SearchScreen from '../screens/SearchScreen';
 import DrawerContent from '../components/DrawerContent';
 import { COLORS } from '../constants/colors';

@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { COLORS } from '../constants/colors';
 
-const AudioPlayer = ({ audioUrls = [] }) => {
+const AudioPlayer = ({ audioUrls = [], phonetics = [], onAccentSelect }) => {
   const [audioStatus, setAudioStatus] = useState('idle');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const soundRef = useRef(null);
@@ -38,6 +38,8 @@ const AudioPlayer = ({ audioUrls = [] }) => {
     if (lower.includes('-us.') || lower.includes('/us/')) return 'US';
     if (lower.includes('-uk.') || lower.includes('/uk/') || lower.includes('-gb.') || lower.includes('/gb/')) return 'UK';
     if (lower.includes('-ca.') || lower.includes('/ca/')) return 'CA';
+    if (lower.includes('-au.') || lower.includes('/au/')) return 'AU';
+    if (lower.includes('-in.') || lower.includes('/in/')) return 'IN';
     return null;
   };
 
@@ -145,6 +147,13 @@ const AudioPlayer = ({ audioUrls = [] }) => {
     setSelectedIndex(index);
     if (audioStatus === 'playing' || audioStatus === 'paused') {
       await handleStop();
+    }
+    if (onAccentSelect) {
+      const audioUrl = displayUrls[index];
+      // Find the phonetic text for this audio URL
+      const phoneticObj = phonetics.find((p) => p.audio === audioUrl);
+      const phoneticText = phoneticObj ? phoneticObj.text : null;
+      onAccentSelect(audioUrl, phoneticText);
     }
   };
 

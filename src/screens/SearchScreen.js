@@ -71,23 +71,18 @@ const SearchScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
       >
         {/* ── Hero Section ── */}
-        {!wordData && !loading && !error && (
-          <View style={styles.heroContainer}>
-            <View style={styles.heroGradient}>
-              <View style={styles.heroContent}>
-                <View style={styles.heroIconBadge}>
-                  <Ionicons name="book" size={36} color={COLORS.accent} />
-                </View>
-                <Text style={styles.heroTitle}>LexiSearch</Text>
-                <Text style={styles.heroSubtitle}>
-                  Discover word meanings, pronunciations & usage examples
-                </Text>
-                <View style={styles.heroDivider} />
-                <Text style={styles.heroTagline}>Your Premium Dictionary</Text>
+        <View style={styles.heroContainer}>
+          <View style={styles.heroGradient}>
+            <View style={styles.heroContent}>
+              <View style={styles.heroIconBadge}>
+                <Ionicons name="book" size={36} color={COLORS.accent} />
               </View>
+              <Text style={styles.heroTitle}>LexiSearch</Text>
+              <View style={styles.heroDivider} />
+              <Text style={styles.heroTagline}>Your Premium Dictionary</Text>
             </View>
           </View>
-        )}
+        </View>
 
         {/* ── Search Section ── */}
         <View style={styles.searchSection}>
@@ -244,7 +239,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: COLORS.textInverse,
     letterSpacing: 1.5,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   heroSubtitle: {
     fontSize: 15,
@@ -252,7 +247,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     paddingHorizontal: 8,
-    marginBottom: 20,
+    marginBottom: 14,
   },
   heroDivider: {
     width: 48,
