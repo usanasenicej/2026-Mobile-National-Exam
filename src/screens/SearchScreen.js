@@ -32,8 +32,16 @@ const SearchScreen = ({ navigation }) => {
       setInputError('Please enter a word to search.');
       return false;
     }
-    if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) {
-      setInputError('Please enter a valid English word.');
+    if (trimmed.includes(' ')) {
+      setInputError('Please search for one word, not a sentence.');
+      return false;
+    }
+    if (/\d/.test(trimmed)) {
+      setInputError('Please search for a word instead of numbers.');
+      return false;
+    }
+    if (!/^[a-zA-Z'-]+$/.test(trimmed)) {
+      setInputError('Please search for a word instead of numbers.');
       return false;
     }
     setInputError('');
@@ -55,47 +63,44 @@ const SearchScreen = ({ navigation }) => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={80}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
     >
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Decorative background circles */}
-        <View style={styles.bgCircle1} />
-        <View style={styles.bgCircle2} />
-        <View style={styles.bgCircle3} />
-
         {/* ── Hero Section ── */}
         {!wordData && !loading && !error && (
           <View style={styles.heroContainer}>
-            <View style={styles.heroIconWrapper}>
-              <Ionicons name="book" size={40} color={COLORS.primary} />
-            </View>
-            <Text style={styles.heroTitle}>LexiSearch</Text>
-            <Text style={styles.heroSubtitle}>
-              Discover word meanings, pronunciations, and usage examples instantly.
-            </Text>
-            <View style={styles.heroBadge}>
-              <Text style={styles.heroBadgeText}>Free Dictionary API</Text>
+            <View style={styles.heroGradient}>
+              <View style={styles.heroContent}>
+                <View style={styles.heroIconBadge}>
+                  <Ionicons name="book" size={36} color={COLORS.accent} />
+                </View>
+                <Text style={styles.heroTitle}>LexiSearch</Text>
+                <Text style={styles.heroSubtitle}>
+                  Discover word meanings, pronunciations & usage examples
+                </Text>
+                <View style={styles.heroDivider} />
+                <Text style={styles.heroTagline}>Your Premium Dictionary</Text>
+              </View>
             </View>
           </View>
         )}
 
-        {/* ── Search Card ── */}
-        <View style={styles.searchCard}>
-          <View style={styles.searchIconRow}>
-            <Ionicons name="search" size={18} color={COLORS.primary} />
-            <Text style={styles.searchLabel}>Search for a word</Text>
-          </View>
-
+        {/* ── Search Section ── */}
+        <View style={styles.searchSection}>
+          <Text style={styles.searchLabel}>Search for a word</Text>
           <View
             style={[
-              styles.inputWrapper,
-              inputError ? styles.inputWrapperError : null,
+              styles.inputCard,
+              inputError ? styles.inputCardError : null,
             ]}
           >
+            <View style={styles.inputIconWrap}>
+              <Ionicons name="search" size={20} color={COLORS.accent} />
+            </View>
             <TextInput
               ref={inputRef}
               style={styles.input}
@@ -154,14 +159,9 @@ const SearchScreen = ({ navigation }) => {
         {loading && (
           <View style={styles.loadingContainer}>
             <View style={styles.loadingCard}>
-              <ActivityIndicator size="large" color={COLORS.primary} />
+              <ActivityIndicator size="large" color={COLORS.accent} />
               <Text style={styles.loadingTitle}>Looking up</Text>
               <Text style={styles.loadingWord}>"{inputWord.trim()}"</Text>
-              <View style={styles.loadingDots}>
-                <View style={[styles.dot, styles.dot1]} />
-                <View style={[styles.dot, styles.dot2]} />
-                <View style={[styles.dot, styles.dot3]} />
-              </View>
             </View>
           </View>
         )}
@@ -170,8 +170,8 @@ const SearchScreen = ({ navigation }) => {
         {!loading && error && (
           <View style={styles.errorContainer}>
             <View style={styles.errorCard}>
-              <View style={styles.errorIconWrapper}>
-                <Ionicons name="search-outline" size={36} color={COLORS.errorRed} />
+              <View style={styles.errorIconCircle}>
+                <Ionicons name="document-text-outline" size={32} color={COLORS.errorRed} />
               </View>
               <Text style={styles.errorTitle}>Word Not Found</Text>
               <Text style={styles.errorMessage}>{error}</Text>
@@ -199,185 +199,146 @@ const SearchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.offWhite,
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingHorizontal: 24,
+    paddingBottom: 48,
     flexGrow: 1,
-    position: 'relative',
-  },
-
-  // Decorative background circles
-  bgCircle1: {
-    position: 'absolute',
-    top: -60,
-    right: -40,
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    backgroundColor: COLORS.primaryLight,
-    opacity: 0.6,
-  },
-  bgCircle2: {
-    position: 'absolute',
-    top: 200,
-    left: -50,
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: COLORS.accentLight,
-    opacity: 0.5,
-  },
-  bgCircle3: {
-    position: 'absolute',
-    bottom: 300,
-    right: -30,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: COLORS.primaryLight,
-    opacity: 0.4,
   },
 
   // Hero
   heroContainer: {
-    alignItems: 'center',
-    paddingTop: 56,
-    paddingBottom: 36,
-    position: 'relative',
-    zIndex: 1,
+    marginTop: 16,
+    marginBottom: 36,
+    borderRadius: 24,
+    overflow: 'hidden',
+    elevation: 8,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 20,
   },
-  heroIconWrapper: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: COLORS.primaryLight,
+  heroGradient: {
+    backgroundColor: COLORS.primaryDark,
+    paddingVertical: 48,
+    paddingHorizontal: 28,
+    alignItems: 'center',
+  },
+  heroContent: {
+    alignItems: 'center',
+  },
+  heroIconBadge: {
+    width: 72,
+    height: 72,
+    borderRadius: 20,
+    backgroundColor: 'rgba(212, 175, 55, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 18,
-    elevation: 6,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-  },
-  heroIcon: {
-    fontSize: 40,
-    color: COLORS.primary,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.25)',
   },
   heroTitle: {
-    fontSize: 36,
+    fontSize: 38,
     fontWeight: '800',
-    color: COLORS.textPrimary,
-    letterSpacing: 1,
+    color: COLORS.textInverse,
+    letterSpacing: 1.5,
     marginBottom: 10,
   },
   heroSubtitle: {
     fontSize: 15,
-    color: COLORS.textSecondary,
+    color: 'rgba(248, 250, 252, 0.75)',
     textAlign: 'center',
     lineHeight: 22,
-    paddingHorizontal: 24,
-    marginBottom: 18,
+    paddingHorizontal: 8,
+    marginBottom: 20,
   },
-  heroBadge: {
-    backgroundColor: COLORS.primaryLight,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  heroBadgeText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.primary,
-    letterSpacing: 0.3,
-  },
-
-  // Search Card
-  searchCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 20,
-    padding: 22,
-    marginTop: 8,
-    elevation: 8,
-    shadowColor: COLORS.shadowDark,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    position: 'relative',
-    zIndex: 1,
-  },
-  searchIconRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  heroDivider: {
+    width: 48,
+    height: 2,
+    backgroundColor: COLORS.accent,
+    borderRadius: 1,
     marginBottom: 14,
   },
-  searchIcon: {
-    fontSize: 0,
+  heroTagline: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: COLORS.accent,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+
+  // Search
+  searchSection: {
+    marginTop: 8,
+    marginBottom: 12,
   },
   searchLabel: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '700',
-    color: COLORS.textPrimary,
-    letterSpacing: 0.3,
+    color: COLORS.textSecondary,
+    letterSpacing: 0.5,
+    marginBottom: 10,
+    textTransform: 'uppercase',
   },
-  inputWrapper: {
+  inputCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 14,
-    borderWidth: 2,
+    backgroundColor: COLORS.white,
+    borderRadius: 18,
+    borderWidth: 1.5,
     borderColor: COLORS.border,
-    paddingHorizontal: 16,
-    height: 54,
+    paddingHorizontal: 18,
+    height: 60,
+    elevation: 4,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
   },
-  inputWrapperError: {
+  inputCardError: {
     borderColor: COLORS.errorRed,
     backgroundColor: COLORS.errorBg,
   },
+  inputIconWrap: {
+    marginRight: 12,
+  },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 17,
     color: COLORS.textPrimary,
     fontWeight: '500',
+    letterSpacing: 0.2,
   },
   clearBtn: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 12,
-    backgroundColor: COLORS.border,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   errorRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 10,
     marginLeft: 4,
-  },
-  errorDot: {
-    color: COLORS.errorRed,
-    fontSize: 10,
-    marginRight: 6,
   },
   inputErrorText: {
     color: COLORS.errorRed,
     fontSize: 13,
     fontWeight: '500',
+    marginLeft: 6,
   },
   searchButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 14,
-    height: 52,
+    borderRadius: 18,
+    height: 58,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 14,
-    elevation: 4,
+    marginTop: 16,
+    elevation: 6,
     shadowColor: COLORS.primaryDark,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowRadius: 12,
   },
   searchButtonDisabled: {
     backgroundColor: COLORS.textMuted,
@@ -390,134 +351,108 @@ const styles = StyleSheet.create({
   },
   searchButtonText: {
     color: COLORS.white,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '700',
-    letterSpacing: 0.5,
-  },
-  searchButtonArrow: {
-    color: COLORS.white,
-    fontSize: 18,
-    fontWeight: '700',
-    marginLeft: 8,
+    letterSpacing: 0.8,
+    marginRight: 8,
   },
 
   // Loading
   loadingContainer: {
     alignItems: 'center',
-    marginTop: 36,
-    position: 'relative',
-    zIndex: 1,
+    marginTop: 48,
   },
   loadingCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.loadingBg,
     borderRadius: 20,
-    padding: 32,
+    padding: 36,
     alignItems: 'center',
-    width: width * 0.75,
-    elevation: 8,
-    shadowColor: COLORS.shadowDark,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
+    width: width * 0.7,
+    elevation: 6,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
     shadowRadius: 16,
+    borderWidth: 2,
+    borderColor: COLORS.border,
   },
   loadingTitle: {
     marginTop: 18,
-    fontSize: 14,
-    color: COLORS.textSecondary,
-    fontWeight: '600',
+    fontSize: 12,
+    color: COLORS.textMuted,
+    fontWeight: '700',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
   },
   loadingWord: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: '800',
     color: COLORS.textPrimary,
     marginTop: 4,
     fontStyle: 'italic',
   },
-  loadingDots: {
-    flexDirection: 'row',
-    marginTop: 14,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.primary,
-    marginHorizontal: 4,
-  },
-  dot1: {
-    opacity: 0.4,
-  },
-  dot2: {
-    opacity: 0.7,
-  },
-  dot3: {
-    opacity: 1,
-  },
 
   // Error
   errorContainer: {
     alignItems: 'center',
-    marginTop: 36,
-    position: 'relative',
-    zIndex: 1,
+    marginTop: 48,
   },
   errorCard: {
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    padding: 28,
+    padding: 32,
     alignItems: 'center',
-    width: width * 0.8,
-    elevation: 8,
-    shadowColor: COLORS.shadowDark,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
+    width: width * 0.78,
+    elevation: 6,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
     shadowRadius: 16,
     borderWidth: 1,
-    borderColor: COLORS.errorBg,
+    borderColor: COLORS.borderLight,
   },
-  errorIconWrapper: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+  errorIconCircle: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
     backgroundColor: COLORS.errorBg,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
-  },
-  errorEmoji: {
-    fontSize: 32,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FECACA',
   },
   errorTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '800',
     color: COLORS.textPrimary,
-    marginBottom: 6,
+    marginBottom: 8,
+    letterSpacing: 0.3,
   },
   errorMessage: {
     fontSize: 14,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 18,
+    lineHeight: 21,
+    marginBottom: 22,
+    paddingHorizontal: 8,
   },
   retryButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 28,
-    elevation: 3,
+    borderRadius: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    elevation: 4,
     shadowColor: COLORS.primaryDark,
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
-    shadowRadius: 6,
+    shadowRadius: 8,
   },
   retryButtonText: {
     color: COLORS.white,
     fontSize: 15,
     fontWeight: '700',
-    letterSpacing: 0.3,
+    letterSpacing: 0.5,
   },
 });
 

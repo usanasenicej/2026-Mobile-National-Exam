@@ -17,18 +17,20 @@ const AppNavigator = () => {
         screenOptions={({ navigation }) => ({
           headerStyle: {
             backgroundColor: COLORS.primaryDark,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
+            elevation: 4,
+            shadowColor: COLORS.shadow,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
           },
-          headerTintColor: COLORS.white,
+          headerTintColor: COLORS.accent,
           headerTitleStyle: {
             fontWeight: '800',
-            fontSize: 19,
-            letterSpacing: 0.3,
+            fontSize: 20,
+            letterSpacing: 0.5,
           },
           drawerType: 'slide',
-          overlayColor: 'rgba(0,0,0,0.5)',
+          overlayColor: 'rgba(15, 23, 42, 0.6)',
           swipeEdgeWidth: 60,
           headerLeft: () => (
             <TouchableOpacity
@@ -37,7 +39,7 @@ const AppNavigator = () => {
               accessibilityLabel="Open navigation drawer"
               accessibilityRole="button"
             >
-              <Ionicons name="menu" size={24} color={COLORS.white} />
+              <Ionicons name="menu" size={24} color={COLORS.accent} />
             </TouchableOpacity>
           ),
         })}

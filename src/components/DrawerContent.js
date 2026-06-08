@@ -47,14 +47,14 @@ const DrawerContent = (props) => {
         {...props}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* ── Header Gradient ── */}
+        {/* ── Header ── */}
         <View style={styles.headerGradient}>
           <View style={styles.brandSection}>
             <View style={styles.brandIconWrapper}>
-              <Ionicons name="book" size={36} color={COLORS.white} />
+              <Ionicons name="book" size={32} color={COLORS.accent} />
             </View>
             <Text style={styles.brandTitle}>LexiSearch</Text>
-            <Text style={styles.brandTagline}>Your pocket dictionary</Text>
+            <Text style={styles.brandTagline}>Your Premium Dictionary</Text>
           </View>
           <View style={styles.headerDecoration} />
         </View>
@@ -69,7 +69,7 @@ const DrawerContent = (props) => {
             accessibilityLabel="Go to Search screen"
           >
             <View style={styles.navIconWrapper}>
-              <Ionicons name="search" size={18} color={COLORS.white} />
+              <Ionicons name="search" size={18} color={COLORS.primaryDark} />
             </View>
             <Text style={styles.navLabel}>Search Words</Text>
             <View style={styles.navActiveDot} />
@@ -82,7 +82,7 @@ const DrawerContent = (props) => {
         <View style={styles.section}>
           <View style={styles.historyHeader}>
             <View style={styles.historyTitleRow}>
-              <Ionicons name="time-outline" size={16} color="#94A3B8" />
+              <Ionicons name="time-outline" size={16} color={COLORS.accent} />
               <Text style={styles.historyTitle}>Recent Searches</Text>
             </View>
             <View style={styles.historyHeaderRight}>
@@ -107,8 +107,8 @@ const DrawerContent = (props) => {
           {searchHistory.length === 0 ? (
             <View style={styles.emptyHistory}>
               <View style={styles.emptyIconWrapper}>
-              <Ionicons name="time-outline" size={28} color="#94A3B8" />
-            </View>
+                <Ionicons name="time-outline" size={28} color="#64748B" />
+              </View>
               <Text style={styles.emptyHistoryText}>No searches yet</Text>
               <Text style={styles.emptyHistoryHint}>
                 Words you look up will appear here for quick access.
@@ -128,7 +128,7 @@ const DrawerContent = (props) => {
                   activeOpacity={0.7}
                 >
                   <View style={styles.historyItemIconWrapper}>
-                    <Ionicons name="chevron-forward" size={16} color={COLORS.primary} />
+                    <Ionicons name="chevron-forward" size={16} color={COLORS.accent} />
                   </View>
                   <Text style={styles.historyItemText}>{item}</Text>
                 </TouchableOpacity>
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
   // Header with gradient effect
   headerGradient: {
     backgroundColor: '#0F172A',
-    paddingTop: 20,
-    paddingBottom: 28,
+    paddingTop: 24,
+    paddingBottom: 32,
     paddingHorizontal: 24,
     position: 'relative',
     overflow: 'hidden',
@@ -172,31 +172,29 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   brandIconWrapper: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: COLORS.drawerActive,
+    width: 64,
+    height: 64,
+    borderRadius: 18,
+    backgroundColor: 'rgba(212, 175, 55, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
-    elevation: 6,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.25)',
   },
   brandTitle: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '800',
     color: COLORS.drawerText,
     letterSpacing: 0.5,
     marginBottom: 4,
   },
   brandTagline: {
-    fontSize: 13,
-    color: '#94A3B8',
-    fontStyle: 'italic',
-    letterSpacing: 0.3,
+    fontSize: 12,
+    color: COLORS.accent,
+    fontWeight: '600',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
   },
   headerDecoration: {
     position: 'absolute',
@@ -206,13 +204,13 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     backgroundColor: COLORS.drawerActive,
-    opacity: 0.15,
+    opacity: 0.08,
   },
 
   // Section
   section: {
     paddingHorizontal: 16,
-    paddingTop: 18,
+    paddingTop: 20,
   },
   sectionLabel: {
     fontSize: 11,
@@ -224,7 +222,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: '#334155',
+    backgroundColor: '#1E293B',
     marginHorizontal: 16,
     marginVertical: 8,
   },
@@ -233,9 +231,9 @@ const styles = StyleSheet.create({
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 13,
+    paddingVertical: 14,
     paddingHorizontal: 14,
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: '#1E293B',
     marginVertical: 2,
     borderWidth: 1,
@@ -245,7 +243,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: COLORS.drawerActive,
+    backgroundColor: COLORS.accentLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -261,7 +259,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.accent,
   },
 
   // History header
@@ -279,32 +277,32 @@ const styles = StyleSheet.create({
   historyTitle: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#94A3B8',
+    color: COLORS.accent,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
   historyCountBadge: {
-    backgroundColor: COLORS.drawerActive,
+    backgroundColor: COLORS.accent,
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 2,
     marginRight: 8,
   },
   historyCount: {
-    color: COLORS.white,
+    color: COLORS.primaryDark,
     fontSize: 12,
     fontWeight: '700',
   },
   clearButton: {
-    backgroundColor: 'rgba(248, 113, 113, 0.15)',
+    backgroundColor: 'rgba(220, 38, 38, 0.12)',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderWidth: 1,
-    borderColor: 'rgba(248, 113, 113, 0.3)',
+    borderColor: 'rgba(220, 38, 38, 0.25)',
   },
   clearButtonText: {
-    color: '#F87171',
+    color: '#FCA5A5',
     fontSize: 12,
     fontWeight: '600',
   },
@@ -326,15 +324,10 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 8,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: 'rgba(212, 175, 55, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
-  },
-  historyItemIcon: {
-    color: COLORS.primary,
-    fontSize: 16,
-    fontWeight: '700',
   },
   historyItemText: {
     color: COLORS.drawerText,
@@ -381,7 +374,7 @@ const styles = StyleSheet.create({
   },
   footerDivider: {
     height: 1,
-    backgroundColor: '#334155',
+    backgroundColor: '#1E293B',
     marginBottom: 12,
   },
   footerText: {

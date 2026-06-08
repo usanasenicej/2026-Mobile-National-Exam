@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import AudioPlayer from './AudioPlayer';
 
@@ -25,27 +26,18 @@ const WordDetailCard = ({ data, word }) => {
     >
       {/* ── Word Heading ── */}
       <View style={styles.wordHeader}>
-        <View style={styles.wordTitleRow}>
-          <View style={styles.wordTitleFlex}>
-            <Text style={styles.wordText}>{mainWord}</Text>
-            {phoneticText ? (
-              <Text style={styles.phoneticText}>{phoneticText}</Text>
-            ) : null}
+        <Text style={styles.wordText}>{mainWord}</Text>
+        {phoneticText ? (
+          <Text style={styles.phoneticText}>{phoneticText}</Text>
+        ) : null}
+        {audioUrls.length > 0 && (
+          <View style={styles.audioWrapper}>
+            <AudioPlayer audioUrls={audioUrls} />
           </View>
-          {audioUrls.length > 0 && (
-            <View style={styles.audioWrapper}>
-              <AudioPlayer audioUrls={audioUrls} />
-            </View>
-          )}
-        </View>
+        )}
       </View>
 
-      {/* Divider with gradient-like effect */}
-      <View style={styles.dividerRow}>
-        <View style={styles.dividerDot} />
-        <View style={styles.dividerLine} />
-        <View style={styles.dividerDot} />
-      </View>
+      <View style={styles.divider} />
 
       {/* ── Meanings ── */}
       {allMeanings.length === 0 ? (
@@ -56,7 +48,6 @@ const WordDetailCard = ({ data, word }) => {
         ))
       )}
 
-      {/* Footer */}
       <View style={styles.cardFooter}>
         <Text style={styles.footerText}>Powered by Free Dictionary API</Text>
       </View>
@@ -92,7 +83,7 @@ const MeaningSection = ({ meaning, index, total }) => {
       {synonyms.length > 0 && (
         <View style={styles.synonymSection}>
           <View style={styles.synonymLabelRow}>
-            <Text style={styles.synonymIcon}>↔</Text>
+            <Ionicons name="swap-horizontal" size={14} color={COLORS.successGreen} />
             <Text style={styles.synonymLabel}>Synonyms</Text>
           </View>
           <View style={styles.synonymChips}>
@@ -109,7 +100,7 @@ const MeaningSection = ({ meaning, index, total }) => {
       {antonyms.length > 0 && (
         <View style={styles.synonymSection}>
           <View style={styles.antonymLabelRow}>
-            <Text style={styles.antonymIcon}>⇄</Text>
+            <Ionicons name="swap-horizontal" size={14} color={COLORS.accent} />
             <Text style={styles.antonymLabel}>Antonyms</Text>
           </View>
           <View style={styles.synonymChips}>
@@ -149,73 +140,57 @@ const DefinitionItem = ({ definition, number }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.cardBg,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 24,
+    padding: 28,
     marginTop: 16,
-    elevation: 6,
-    shadowColor: COLORS.shadowDark,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    maxHeight: '75%',
+    elevation: 8,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+    maxHeight: '72%',
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
   },
 
   // Word header
   wordHeader: {
-    marginBottom: 8,
-  },
-  wordTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  wordTitleFlex: {
-    flex: 1,
-    flexShrink: 1,
+    marginBottom: 16,
   },
   wordText: {
-    fontSize: 28,
+    fontSize: 34,
     fontWeight: '800',
     color: COLORS.textPrimary,
-    lineHeight: 34,
+    lineHeight: 40,
+    letterSpacing: 0.5,
+    marginBottom: 6,
   },
   phoneticText: {
-    fontSize: 15,
-    color: COLORS.primary,
+    fontSize: 17,
+    color: COLORS.phonetic,
     fontWeight: '500',
-    marginTop: 4,
     fontStyle: 'italic',
+    marginBottom: 16,
+    letterSpacing: 0.3,
   },
   audioWrapper: {
-    marginLeft: 12,
+    marginTop: 8,
   },
 
-  // Divider row
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 16,
-  },
-  dividerDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: COLORS.primary,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1.5,
+  divider: {
+    height: 2,
     backgroundColor: COLORS.border,
-    marginHorizontal: 10,
+    marginVertical: 18,
+    borderRadius: 1,
   },
 
   // Meaning block
   meaningBlock: {
-    marginBottom: 4,
+    marginBottom: 8,
   },
   meaningBlockSpacer: {
-    marginTop: 12,
-    paddingTop: 16,
+    marginTop: 20,
+    paddingTop: 20,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
   },
@@ -223,22 +198,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: 16,
   },
   posBadgeWrapper: {
     flex: 1,
   },
   posBadge: {
     backgroundColor: COLORS.primary,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
     alignSelf: 'flex-start',
-    elevation: 1,
+    elevation: 2,
     shadowColor: COLORS.primaryDark,
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 4,
   },
   posText: {
     color: COLORS.white,
@@ -248,136 +223,129 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   posCount: {
-    marginLeft: 10,
+    marginLeft: 12,
     justifyContent: 'flex-end',
   },
   posCountText: {
-    fontSize: 12,
+    fontSize: 13,
     color: COLORS.textMuted,
-    fontWeight: '500',
+    fontWeight: '600',
   },
 
   // Definition
   defItem: {
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: 14,
     alignItems: 'flex-start',
   },
   defNumberWrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.primaryLight,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: COLORS.accentLight,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 12,
     marginTop: 2,
     flexShrink: 0,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.2)',
   },
   defNumber: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '700',
-    color: COLORS.primary,
+    color: COLORS.accentDark,
   },
   defContent: {
     flex: 1,
   },
   defText: {
-    fontSize: 15,
+    fontSize: 16,
     color: COLORS.textPrimary,
-    lineHeight: 22,
+    lineHeight: 24,
     fontWeight: '500',
   },
   exampleBox: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.accentLight,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.primary,
-    borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    marginTop: 8,
+    borderLeftColor: COLORS.accent,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginTop: 10,
   },
   exampleQuote: {
     fontSize: 14,
     color: COLORS.textSecondary,
     fontStyle: 'italic',
-    lineHeight: 20,
+    lineHeight: 21,
   },
 
   // Synonyms / Antonyms
   synonymSection: {
-    marginTop: 12,
+    marginTop: 14,
   },
   synonymLabelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 6,
-  },
-  synonymIcon: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: COLORS.successGreen,
-    marginRight: 4,
+    marginBottom: 8,
   },
   synonymLabel: {
     fontSize: 13,
     fontWeight: '700',
     color: COLORS.successGreen,
+    marginLeft: 4,
+    letterSpacing: 0.3,
   },
   antonymLabelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 8,
-    marginTop: 4,
-  },
-  antonymIcon: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: COLORS.accent,
-    marginRight: 4,
+    marginBottom: 8,
+    marginTop: 8,
   },
   antonymLabel: {
     fontSize: 13,
     fontWeight: '700',
     color: COLORS.accent,
+    marginLeft: 4,
+    letterSpacing: 0.3,
   },
   synonymChips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    flex: 1,
   },
   chip: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.primaryLight,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    margin: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    margin: 3,
   },
   chipText: {
-    fontSize: 12,
+    fontSize: 13,
     color: COLORS.textSecondary,
     fontWeight: '500',
   },
   antonymChip: {
     backgroundColor: COLORS.accentLight,
-    borderColor: '#FED7AA',
+    borderColor: 'rgba(212, 175, 55, 0.3)',
   },
   antonymChipText: {
-    color: COLORS.accent,
+    color: COLORS.accentDark,
   },
 
   noDataText: {
     color: COLORS.textMuted,
     fontStyle: 'italic',
     textAlign: 'center',
-    marginVertical: 16,
-    fontSize: 15,
+    marginVertical: 20,
+    fontSize: 16,
   },
 
   cardFooter: {
-    marginTop: 16,
+    marginTop: 20,
     paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
@@ -387,6 +355,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: COLORS.textMuted,
     fontWeight: '500',
+    letterSpacing: 0.3,
   },
 });
 

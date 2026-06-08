@@ -30,7 +30,7 @@ export const fetchWordDefinition = async (word) => {
     // Axios error with a response means the server replied (e.g. 404)
     if (error.response) {
       if (error.response.status === 404) {
-        throw new Error(`"${word}" was not found in the dictionary.`);
+        throw new Error(`"${word}" was not found in the dictionary. This word may be offensive or not available in our database.`);
       }
       throw new Error(
         `Server error (${error.response.status}). Please try again later.`

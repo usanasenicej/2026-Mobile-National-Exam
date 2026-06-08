@@ -102,12 +102,12 @@ export const DictionaryProvider = ({ children }) => {
    * Clears the entire search history.
    */
   const clearSearchHistory = useCallback(async () => {
-    setSearchHistory([]);
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
     } catch (err) {
       console.error('Failed to clear search history:', err);
     }
+    setSearchHistory([]);
   }, []);
 
   /**
@@ -121,20 +121,22 @@ export const DictionaryProvider = ({ children }) => {
     });
   }, [persistSearchHistory]);
 
+  const contextValue = React.useMemo(() => ({
+    wordData,
+    loading,
+    error,
+    searchHistory,
+    currentWord,
+    historyLoading,
+    searchWord,
+    clearResults,
+    clearSearchHistory,
+    removeFromSearchHistory,
+  }), [wordData, loading, error, searchHistory, currentWord, historyLoading, searchWord, clearResults, clearSearchHistory, removeFromSearchHistory]);
+
   return (
     <DictionaryContext.Provider
-      value={{
-        wordData,
-        loading,
-        error,
-        searchHistory,
-        currentWord,
-        historyLoading,
-        searchWord,
-        clearResults,
-        clearSearchHistory,
-        removeFromSearchHistory,
-      }}
+      value={contextValue}
     >
       {children}
     </DictionaryContext.Provider>
